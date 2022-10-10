@@ -23,7 +23,7 @@ namespace API.Controllers
         public async Task<ActionResult<UserDto>> Register(RegisterDto registerDto)
         {
             if (await UserExists(registerDto.Username))
-                return BadRequest("Username is taken");
+                return BadRequest(" User Name is already taken");
 
             using var hmac = new HMACSHA512();
 
@@ -36,7 +36,7 @@ namespace API.Controllers
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
 
-            return new UserDto
+            return new UserDto 
             {
                 Username = user.UserName,
                 Token = _tokenService.CreateToken(user)
