@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { ToastrModule, ToastrService } from 'ngx-toastr';
 import { Observable } from 'rxjs';
 import { User } from '../_models/user';
 import { AccountService } from '../_services/account.service';
@@ -12,7 +14,7 @@ export class NacComponent implements OnInit {
   model: any = {}
   // currentUser$: Observable<User>;
 
-  constructor(public accountService: AccountService) { }
+  constructor(public accountService: AccountService, private router: Router, private toastr: ToastrService) { }
 
   ngOnInit(): void {
     // this.currentUser$ = this.accountService.currentUser$;
@@ -23,6 +25,7 @@ export class NacComponent implements OnInit {
       console.log(response);
     }, error => {
       console.log(error);
+      this.toastr.error(error.error);
     })
   }
 
