@@ -16,7 +16,7 @@
     position: relative;
 }
 
-.member-icons{
+.member-icons {
     position: absolute;
     bottom: -20%;
     left: 0;
@@ -26,12 +26,11 @@
     opacity: 0;
 }
 
-.card-img-wrapper:hover .member-icons{
+.card-img-wrapper:hover .member-icons {
     bottom: 0;
     opacity: 1;
 }
 
-.animate{
+.animate {
     transition: all 0.3s ease-in-out;
 }
-
