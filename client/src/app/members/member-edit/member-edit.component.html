@@ -22,12 +22,12 @@
                 </div>
                 <div>
                     <strong>Member Since:</strong>
-                    <p>{{member.created}}</p>
+                    <p>{{member.created | date: 'longDate'}}</p>
                 </div>
-                <div>
+                <!-- <div>
                     <strong>Last Active:</strong>
-                    <p>{{member.lastActive}}</p>
-                </div>
+                    <p>{{member.lastActive | timeago}}</p>
+                </div> -->
             </div>
             <div class="card-footer">
                 <button [disabled]="!editForm.dirty" form="editForm" type="submit"
