@@ -40,7 +40,7 @@ export class MembersService {
     this.userParams = new UserParams(this.user);
     return this.userParams;
   }
-  
+
   getMembers(userParams: UserParams) {
     var response = this.memberCache.get(Object.values(userParams).join('-'));
     if (response) {
@@ -90,6 +90,18 @@ export class MembersService {
 
   deletePhoto(photoId: number) {
     return this.http.delete(this.baseurl + 'users/delete-photo/' + photoId);
+  }
+
+  addLike(username: string) {
+    return this.http.post(this.baseurl + 'likes/' + username, {});
+  }
+
+  getLikes(predicate: string, pageNumber, pageSize) {
+    let params = this.getPaginationHeaders(pageNumber, pageSize);
+    params = params.append('predicate',predicate);
+
+    return this.getPaginatedResult<Partial<Member[]>>(this.baseurl + 'likes', params);
+    //return this.http.get<Partial<Member[]>>(this.baseurl + 'likes?predicate=' + predicate);
   }
 
   private getPaginatedResult<T>(url, params) {
