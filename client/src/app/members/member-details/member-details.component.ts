@@ -1,10 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Member } from 'src/app/_models/member';
 import { MembersService } from 'src/app/_services/members.service';
 import { NgxGalleryOptions } from '@kolkov/ngx-gallery';
 import { NgxGalleryImage } from '@kolkov/ngx-gallery';
 import { NgxGalleryAnimation } from '@kolkov/ngx-gallery';
+import { TabDirective, TabsetComponent } from 'ngx-bootstrap/tabs';
+import { Message } from 'src/app/_models/message';
+import { MessageService } from 'src/app/_services/message.service';
 
 
 @Component({
@@ -12,15 +15,26 @@ import { NgxGalleryAnimation } from '@kolkov/ngx-gallery';
   templateUrl: './member-details.component.html',
   styleUrls: ['./member-details.component.css']
 })
-export class MemberDetailsComponent implements OnInit {
 
+export class MemberDetailsComponent implements OnInit {
+  @ViewChild('memberTabs',{static: true}) memberTabs: TabsetComponent;
   member: Member;
   galleryOptions: NgxGalleryOptions[];
   galleryImages: NgxGalleryImage[];
-  constructor(private memberService: MembersService, private route: ActivatedRoute) { }
+  activeTab: TabDirective;
+  messages:  Message[] = [];
+
+  constructor(private memberService: MembersService, private route: ActivatedRoute, private messageService: MessageService) { }
 
   ngOnInit(): void {
-    this.loadMember();
+    this.route.data.subscribe(data=> {
+      this.member = data.member;
+    })
+
+    this.route.queryParams.subscribe(params => {
+      params.tab ? this.selectTab(params.tab) : this.selectTab(0);
+    })
+
     this.galleryOptions = [
       {
         width: '500px',
@@ -31,6 +45,9 @@ export class MemberDetailsComponent implements OnInit {
         preview: false
       }
     ]
+
+    this.galleryImages = this.getImages();
+
   }
 
   getImages(): NgxGalleryImage[] {
@@ -45,10 +62,25 @@ export class MemberDetailsComponent implements OnInit {
     return imageUrls;
   }
 
-  loadMember() {
-    this.memberService.getMember(this.route.snapshot.paramMap.get('username')).subscribe(member => {
-      this.member = member;
-      this.galleryImages = this.getImages();
+  // loadMember() {
+  //   this.memberService.getMember(this.route.snapshot.paramMap.get('username')).subscribe(member => {
+  //     this.member = member;
+  //   })
+  // }
+
+  selectTab(tabId: number){
+    this.memberTabs.tabs[tabId].active = true;
+  }
+
+  loadMessages() {
+    this.messageService.getMessageThread(this.member.username).subscribe(messages => {
+      this.messages = messages;
     })
+  }
+  onTabActivated(data: TabDirective){
+    this.activeTab =data;
+    if(this.activeTab.heading === 'Messages' && this.messages.length === 0){
+      this.loadMessages();      
+    }
   }
 }
