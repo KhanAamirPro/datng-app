@@ -1,5 +1,6 @@
 using API.Extensions;
 using API.Middleware;
+using API.SignalR;
 using Microsoft.OpenApi.Models;
 
 namespace API
@@ -21,10 +22,12 @@ namespace API
             services.AddControllers();
             services.AddCors();
             services.AddIdentityServices(_config);
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "WebAPIv5", Version = "v1" });
-            });
+            services.AddSignalR();
+
+            // services.AddSwaggerGen(c =>
+            // {
+            //     c.SwaggerDoc("v1", new OpenApiInfo { Title = "WebAPIv5", Version = "v1" });
+            // });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -38,9 +41,10 @@ namespace API
 
             app.UseCors((pb) =>
             {
-                pb.AllowAnyOrigin();
-                pb.AllowAnyMethod();
                 pb.AllowAnyHeader();
+                pb.AllowAnyMethod();
+                pb.AllowCredentials();
+                pb.WithOrigins("https://localhost:4200");
             });
 
             app.UseAuthentication();
@@ -50,6 +54,8 @@ namespace API
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapHub<PresenceHub>("hubs/presence");
+                endpoints.MapHub<MessageHub>("hubs/message");
             });
         }
     }
