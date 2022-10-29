@@ -1,9 +1,18 @@
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.AspNetCore.Identity;
 
 namespace API.Entities
 {
     public class AppUser : IdentityUser<int>
     {
+        [Key]
+        [Column("id")]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public override int Id { get; set; }
+        public AppUser() {
+ 
+        }
         // public int Id { get; set; }
         // public string UserName { get; set; }
         // public byte[] PasswordHash { get; set; }
@@ -25,7 +34,6 @@ namespace API.Entities
         public ICollection<Message> MessagesSent { get; set; }
         public ICollection<Message> MessagesReceived { get; set; }
         public ICollection<AppUserRole> UserRoles { get; set; }
-
-
+ 
     }
 }

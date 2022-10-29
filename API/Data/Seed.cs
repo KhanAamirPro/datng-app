@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace API.Data
 {
-    public class Seed
+    public static class Seed
     {
         public static async Task SeedUsers(UserManager<AppUser> userManager, RoleManager<AppRole> roleManager)
         {
@@ -26,12 +26,10 @@ namespace API.Data
             {
                 await roleManager.CreateAsync(role);
             }
+
             foreach (var user in users)
             {
-                //using var hmac = new HMACSHA512();
                 user.UserName = user.UserName.ToLower();
-                // user.PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes("password"));
-                // user.PasswordSalt = hmac.Key;
                 await userManager.CreateAsync(user, "Pa$$w0rd");
                 await userManager.AddToRoleAsync(user, "Member");
             }
