@@ -1,10 +1,5 @@
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.AspNetCore.Identity;
-
-namespace API.Entities
-{
-    public class AppUser : IdentityUser<int>
+namespace API.Entities;
+public class AppUser : IdentityUser<int>
     {
         [Key]
         [Column("id")]
@@ -36,4 +31,3 @@ namespace API.Entities
         public ICollection<AppUserRole> UserRoles { get; set; }
  
     }
-}
