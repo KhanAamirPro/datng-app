@@ -1,5 +1,3 @@
-import { TitleCasePipe } from '@angular/common';
-import { ThrowStmt } from '@angular/compiler';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { HubConnection, HubConnectionBuilder } from '@microsoft/signalr';
