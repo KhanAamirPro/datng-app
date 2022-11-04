@@ -15,7 +15,7 @@ export class MessagesComponent implements OnInit {
   pagination: Pagination;
   container = 'Unread';
   pageNumber = 1;
-  pageSize = 5;
+  pageSize = 20;
   loading = false;
 
   constructor(private messageService: MessageService, private confirmService: ConfirmService) { }
@@ -44,7 +44,7 @@ export class MessagesComponent implements OnInit {
   }
 
   pageChanged(event: any) {
-    if (this.pageNumber != event.page) {
+    if (this.pageNumber !== event.page) {
       this.pageNumber = event.page;
       this.loadMessages();
     }
