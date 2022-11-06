@@ -12,7 +12,6 @@ import { PresenceService } from 'src/app/_services/presence.service';
 export class MemberCardsComponent implements OnInit {
   @Input() member: Member;
 
-
   constructor(private memberService: MembersService, private toastr: ToastrService, public presence: PresenceService) { }
 
   ngOnInit(): void {
@@ -23,5 +22,5 @@ export class MemberCardsComponent implements OnInit {
       this.toastr.success('You have liked ' + member.knownAs);
     })
   }
-
+ 
 }
